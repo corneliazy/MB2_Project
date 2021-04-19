@@ -1,12 +1,12 @@
-# MB2 Project (sensitivity analysis)
+# MB2 Project (training data saturation)
 # author: Cornelia Zygar, 2582296
 
 ###################################################################
 # This is a script for the assessment training data saturation    #
-# for different satellite images for a supervised classification  #
-# within the RStoolbox.                                           #
+# for different satellite images for a supervised  random forest  #
+# classification within the RStoolbox.                            #
 # LIMITATION:                                                     #
-# So far, code is only working for Classifications with 3 classes # 
+# So far, code is only working for classifications with 3 classes # 
 ###################################################################
 
 # loading relevant packages
@@ -25,7 +25,6 @@ library(drc)
 library(stats)
 
 
-
 ###################################################################
 # function definitions                                            # 
 ###################################################################
@@ -36,15 +35,15 @@ library(stats)
 # predict = logical. Produce a map (TRUE) or only fit and validate the model (FALSE)
 # model = "rf" (random forest default)
 
-# definition of nSamples iteration steps
-# sampleValList <- list(100, 300, 500, 700 ,1000, 2000, 3000, 4000, 6000)
-# sampleValList <- list(100,500, 1000,1500 ,2000, 3000,4000)
-# function needs to be applied on a list of SpatialPolygonDataframes
 
-
-# DO NOT RUN INDEPENDENTLY!  
+# DO NOT RUN THIS FUNCTION INDEPENDENTLY!  
 # function to iterate over list and calculate sensitivity, specificity, overallAccuracy
 # for different nSamples.
+# @param sampleValNumber defines number of training samples for classification (nSamples)
+# @param image rasterbrick to perform the supervised classification on
+# @param training set of training data (polygons)
+# @param validation set of validation data (polygons)
+# function returns a list of classwise sensitivity and specificity values and overall accuracy
 helpSaturationCheck <- function(sampleValNumber, image, training, validation){
   caretResult <- getValidation(
     superClass(
@@ -72,11 +71,17 @@ helpSaturationCheck <- function(sampleValNumber, image, training, validation){
 }
 
   
-# This function runs the helpSaturationCheck-function
-# Depending on set iterations and sampleValList_raw, this can take veeeeeeeery long!
+# This function runs the helpSaturationCheck()-function
+# Depending on set number of iterations and sampleValList_raw, this can take veeeeeeeery long!
 # But it is working, no worries!
-  
+# @param iterations number of repetitions for supervised classification with same nSamples
+# @param sampleValList_raw list of integers that indicate the different nSample values over which will be iterated
+# @param image rasterbrick to perform the supervised classification on
+# @param training training set of training data (polygons)
+# @param validation set of validation data (polygons)
+
 saturationCheck <- function(iterations, sampleValList_raw, image, training, validation){
+  
   # defining list to which helpSaturationcheck can be applied on.
   # The elements of the list are defined as follows:
   # each value in sampleValList_raw is repeated "iterations" times.
@@ -109,9 +114,8 @@ return (df)
 # 1: plotting overall accuracy
 # 2: plotting classwise sensitivity
 # 3: plotting classwise specificity
-
-# TODO evtl. option zum auswaehlen verschiedener plotarten?!
-
+# @param accuaryDf dataframe created by saturationCheck() function
+# @param attribute attribute whose accuracy will be plotted ("accuracy"/"specificity"/"sensitivity")
 saturationPlot <- function(accuracyDf, attribute){
   
   # select all rows where attribute == attribute
@@ -152,6 +156,12 @@ validation_bavaria_1 <- readOGR("validation_bayern_1_small.shp")
 ###################################################################
 # running the functions                                           # 
 ###################################################################
+
+
+# definition of nSamples iteration steps
+# sampleValList <- list(100, 300, 500, 700 ,1000, 2000, 3000, 4000, 6000)
+# sampleValList <- list(100,500, 1000,1500 ,2000, 3000,4000)
+# function needs to be applied on a list of SpatialPolygonDataframes
 
 
 #saturationCheck(iterations, sampleValList_raw, image, training, validation)
