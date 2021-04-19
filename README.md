@@ -1,4 +1,4 @@
-# MB2_Project
+# Sensitivity analysis
 
 ## Site overview
 ![overview image](https://raw.githubusercontent.com/corneliazy/MB2_Project/main/OverviewSmallSitesNummeriert.png) <br>
