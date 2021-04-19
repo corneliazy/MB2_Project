@@ -20,9 +20,7 @@ library(mosaic)
 library(tidyr)
 library(viridis)
 
-# for selfstarting nonlinear regression model
-#library(devtools)
-#install_github("onofriandreapg/aomisc")
+# for self starting nonlinear regression model
 library(drc)
 library(stats)
 
