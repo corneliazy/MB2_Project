@@ -14,7 +14,7 @@ This function is the base as it estimates the accuracy values for different numb
 
 ### saturationPlot()
 With this function, classwise sensitivity and specificity values can be plotted as well as overall accuracy values. <br>
-It serves as a tool for a visual (more subjective) saturation estimation.
+It serves as a tool for a visual (more subjective) saturation estimation and also shows the behaviour of individual classes.
 
 ### estimateCurve() 
 Here, an asymptotic regression model is adjusted to the accuracy data frame (provided by saturationCheck()). <br>
