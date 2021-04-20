@@ -1,7 +1,5 @@
 # Training data saturation analysis
-**Important note:** In the code, some functions will be run. Especially the saturationCheck() function can take very (>30 minutes) long (depending on selected parameter values).
-For testing, I suggest to reduce the amount iterations and sampleValList_raw values. Nevertheless, this will most probably reduce the quality of the result. <br>
-Therefore, In the following I present some results I already calculated.
+
 ## Site overview
 ![overview image](https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/OverviewSmallSitesNummeriert.png) <br>
 <br>
@@ -28,6 +26,10 @@ In all example data files the classes are assigned as follows:<br>
 </table> 
 
 ## saturationCheck.R
+**Important note:** In the code, some functions will be run. Especially the saturationCheck() function can take very (>30 minutes) long (depending on selected parameter values).
+For testing, I suggest to reduce the amount iterations and sampleValList_raw values. Nevertheless, this will most probably reduce the quality of the result. <br>
+Therefore, In the following I present some results I already calculated.
+
 ### saturationCheck()
 This function is the base as it estimates the accuracy values for different numbers of samples.<br>
 ```
