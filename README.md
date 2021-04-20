@@ -68,11 +68,16 @@ plotSaturationDf_bayern_1_spec <- saturationPlot(
 
 #### results for bayern_1 (click on images to enlarge them):
 <p float="left">
-  <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_accuracy.png" width="30%" />
-  <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_sensitivity.png" width="30%" /> 
-  <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_specificity.png" width="30%" />
+  <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_accuracy_neu.png" width="30%" />
+  <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_sensitivity_neu.png" width="30%" /> 
+  <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_specificity_neu.png" width="30%" />
 </p>
-
+#### results for bayern_2 (click on images to enlarge them):
+<p float="left">
+  <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_2_accuracy.png" width="30%" />
+  <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_2_sensitivity.png" width="30%" /> 
+  <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_2_specificity.png" width="30%" />
+</p>
 
 ### estimateCurve() 
 Here, an asymptotic regression model is adjusted to the median values of the accuracy data frame (provided by saturationCheck()). <br>
