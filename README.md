@@ -18,6 +18,14 @@ This function is the base as it estimates the accuracy values for different numb
 With this function, classwise sensitivity and specificity values can be plotted as well as overall accuracy values. <br>
 It serves as a tool for a visual (more subjective) saturation estimation and also shows the behaviour of individual classes.
 
+#### results for bayern_1:
+<p float="left">
+  <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_accuracy.png" width="100" />
+  <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_sensitivity.png" width="100" /> 
+  <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_specificity.png" width="100" />
+</p>
+
+
 ### estimateCurve() 
 Here, an asymptotic regression model is adjusted to the accuracy data frame (provided by saturationCheck()). <br>
 
