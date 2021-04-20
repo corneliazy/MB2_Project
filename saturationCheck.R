@@ -39,7 +39,7 @@ library(stats)
 
 
 # DO NOT RUN THIS FUNCTION INDEPENDENTLY!  
-# function to iterate over list and calculate sensitivity, specificity, overallAccuracy
+# function to iterate over list and estimate sensitivity, specificity, overallAccuracy
 # for different nSamples.
 # @param sampleValNumber defines number of training samples for classification (nSamples)
 # @param image rasterbrick to perform the supervised classification on
@@ -141,64 +141,11 @@ saturationPlot <- function(accuracyDf, attribute){
   return(plot)
 }
 
-###################################################################
-# loading the data                                                # 
-###################################################################
-# Code has to be located in the same directory as the "validation_data", 
-# "training_data" and "img_data" folders!
 
-# only selecting rgb (not NIR)
-rgb_2019_bavaria_1 <- dropLayer(brick(here("img_data/S2Stack_20190704_bayern_1_small.tif")),4)
-rgb_2019_bavaria_2 <- dropLayer(brick(here("img_data/S2Stack_20190704_bayern_2_small.tif")),4)
-
-# importing Training data
-training_bavaria_1 <- readOGR(here("training_data/training_bayern_1_small.shp"))
-training_bavaria_2 <- readOGR(here("training_data/training_bayern_2_small.shp"))
-
-# importing validation data
-validation_bavaria_1 <- readOGR(here("validation_data/validation_bayern_1_small.shp"))
-validation_bavaria_2 <- readOGR(here("validation_data/validation_bayern_1_small.shp"))
-
-###################################################################
-# running the functions                                           # 
-###################################################################
-
-
-# definition of nSamples iteration steps
-# sampleValList <- list(100, 300, 500, 700 ,1000, 2000, 3000, 4000, 6000)
-# sampleValList <- list(100,500, 1000,1500 ,2000, 3000,4000)
-# function needs to be applied on a list of SpatialPolygonDataframes
-
-
-#saturationCheck(iterations, sampleValList_raw, image, training, validation)
-saturationImage1 <-  saturationCheck(
-  iterations = 4, 
-  sampleValList_raw = list(50,100,500,1000,2000,4000), 
-  image = rgb_2019_bavaria_1, 
-  training = training_bavaria_1, 
-  validation = validation_bavaria_1
-  )
-
-saturationImage1
-
-# exporting dataframe for further usage
-# getwd()
-# write.table(saturationImage1, file="outputs/df_bayern_1.txt", sep=";")
-
-# plotting saturationImage1 results using the saturationPlot() function
-plotSaturationImage1 <- saturationPlot(
-  accuracyDf = saturationImage1, 
-  attribute = "accuracy"
-  )
-
-plotSaturationImage1
-
-
-###################################################################
-# experimental bonus functions                                    # 
-###################################################################
-
-
+# this function uses the drm() function from the drc package to model an asymptotic regression model
+# for the datapoints provided by saturationCheck()
+# @param df data.frame object like the ones created by saturationCheck()
+# @return asymptotic regression model
 estimateCurve <- function(df){
   
   # filtering all rows for rows with attribute == accuracy
@@ -226,19 +173,16 @@ estimateCurve <- function(df){
        log="", 
        main = "Trainingdata saturation"#, 
        #xlim = c(0,6000)
-       )
+  )
   return (model)
 }
 
-# running the above function
-
-ggg <- estimateCurve(saturationImage1)
-ggg
-
-# function to extract point of trainingdata saturation
-# satslope = slope of a curve at which it is defined as saturated
+# function to estimate the nSamples for which the overall accuracy of classification result seems to be saturated.
+# @param model asymptotic regression model exactly like the ones provided by estimateCurve()
+# @param satslope slope of a curve at which it is defined as saturated
+# @return nSamples for which overall accuracy of classification saturates
 sampleSaturation <- function(model, satslope){
-
+  
   # extracting coefficient values from model
   coef_c <- as.list(model$coefficients)$c
   coef_d <- as.list(model$coefficients)$d
@@ -248,56 +192,82 @@ sampleSaturation <- function(model, satslope){
   f <- function(x) (coef_c+(coef_d-coef_c)*(1-exp(-x/coef_e)))
   # plot f
   curve(f,0,3000)
-
+  
   # calculating derivation (with respect to x) of f to get its slope
   g <- function(x){}
   body(g) <- D(body(f), "x")
   
   # plot g
   curve(g, 0, 3000)
-
+  
   # derivation function:
   # function (x) (coef_d - coef_c) * (exp(-x/coef_e) * (1/coef_e))
   
-  # rearranging it
+  # rearranging it and add satslope as y
   g_rearraged <- function(x) (coef_d - coef_c)*(exp(-x/coef_e)*(1/coef_e))-satslope
   x_sat <- uniroot(g_rearraged, lower=0, upper=3000)$root
   # print(x_sat)
   
   return (x_sat)
-
+  
 }
+###################################################################
+# loading the data                                                # 
+###################################################################
+# Code has to be located in the same directory as the "validation_data", 
+# "training_data" and "img_data" folders!
 
-# testing function
-sampleSaturation(ggg, 0.000001)
+# only selecting rgb (not NIR)
+rgb_2019_bavaria_1 <- dropLayer(brick(here("img_data/S2Stack_20190704_bayern_1_small.tif")),4)
+rgb_2019_bavaria_2 <- dropLayer(brick(here("img_data/S2Stack_20190704_bayern_2_small.tif")),4)
+
+# importing Training data
+training_bavaria_1 <- readOGR(here("training_data/training_bayern_1_small.shp"))
+training_bavaria_2 <- readOGR(here("training_data/training_bayern_2_small.shp"))
+
+# importing validation data
+validation_bavaria_1 <- readOGR(here("validation_data/validation_bayern_1_small.shp"))
+validation_bavaria_2 <- readOGR(here("validation_data/validation_bayern_1_small.shp"))
+
+###################################################################
+# running the previously defined functions                        # 
+###################################################################
+
+# this function call will take long! Depending on the chosen number of iterations and the number 
+# and size of samples in sampleValList_raw it might take very (!) long (20-30 min).
+# To test it, I suggest using something like 
+# iterations = 2, 
+# sampleValList_raw = list(50,100,1000,2000)
+# the result will not be as clear!
+saturationDf_bayern_1 <-  saturationCheck(
+  iterations = 4, 
+  sampleValList_raw = list(50,100,500,1000,2000,4000), 
+  image = rgb_2019_bavaria_1, 
+  training = training_bavaria_1, 
+  validation = validation_bavaria_1
+  )
+
+saturationDf_bayern_1
+
+# exporting dataframe for further usage
+# write.table(saturationDf, file=here("outputs/df_bayern_1.txt"), sep=";")
+
+# plotting saturationDf results using the saturationPlot() function
+plotSaturationDf_bayern_1 <- saturationPlot(
+  accuracyDf = saturationDf_bayern_1, 
+  attribute = "accuracy"
+  )
+
+plotSaturationImage1
+
+# running estimateCurve() function
+curve_bayern_1 <- estimateCurve(saturationDf_bayern_1)
+curve_bayern_1
+
+
+# running sampleSaturation() function
+sampleSaturation(curve_bayern_1, 0.000001)
 
 ###################################################################
 # the  end                                                        # 
 ###################################################################
-f3 <- function(x){5~3+x}
-solve(f3)
-
-# plotting the result:
-ggplot(data = accuracydf, aes(x=nSamples, y = accuracy))+
-  geom_point(aes(x=nSamples, y=accuracy))+
-  stat_smooth(method="lm")
-
-ggplot(data = accuracydf, aes(x=nSamples, y = accuracy))+
-  geom_point(aes(x=nSamples, y=accuracy))+
-  stat_smooth(method="nls", formula = "y ~ A+B*exp(k*x)", method.args = list(start= c(A=0.93, B=-0.93, k=-0.6)))
-
-
-
-# adjusting a curve to the datapoints
-# equation: accuracy ~ A+B*exp(k*nSamples)
-# guesses: A=1; b=-1; k=ln(0.5)
-f <- fitModel(accuracy ~ A+B*exp(k*nSamples), 
-              data= accuracydf, 
-              start = list(A = 0.99, B = -0.99, k = log(0.5)/0.5)
-              )
-
-# looking at the actual classification
-SC <- superClass(rgb_2019_bavaria_1, training_bavaria_1, trainPartition = 0.7, responseCol = "class", nSamples = 100)
-SC
-x11()
-plot(SC$map)
