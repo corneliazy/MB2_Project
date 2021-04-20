@@ -1,4 +1,4 @@
-# Training data saturation analysis
+# Training data saturation & distribution analysis
 
 ## Site overview
 ![overview image](https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/OverviewSmallSitesNummeriert.png) <br>
@@ -100,3 +100,6 @@ The calculation is based on the regression curve (estimateCurve()) and a slope (
 > sampleSaturation(curve_bayern_1, 0.000001)
 [1] 2579.789
 ```
+
+## distrAssessment.R
+Very basic script for the analysis of the influence on training data distribution on the accuracy of a classification.
