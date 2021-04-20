@@ -24,14 +24,13 @@ library(here)
 # for self starting nonlinear regression model
 library(drc)
 library(stats)
-#library(Deriv)
 
 
 ###################################################################
 # function definitions                                            # 
 ###################################################################
 
-# running the supervised classification function from RSToolbox package
+# running the superClass() function from RSToolbox package
 # relevant parameters:
 # nSamples = Number of samples per land cover class 
 # predict = logical. Produce a map (TRUE) or only fit and validate the model (FALSE)
@@ -45,7 +44,7 @@ library(stats)
 # @param image rasterbrick to perform the supervised classification on
 # @param training set of training data (polygons)
 # @param validation set of validation data (polygons)
-# @return list of classwise sensitivity and specificity values and overall accuracy
+# @return list of classwise sensitivity and specificity values as well as overall accuracy
 helpSaturationCheck <- function(sampleValNumber, image, training, validation){
   caretResult <- getValidation(
     superClass(
@@ -130,12 +129,16 @@ saturationPlot <- function(accuracyDf, attribute){
   #   geom_point(aes(x=nSamples, y=values, color = Class))
   
   # box plot (with points and groups)
-  plot <- ggplot(data = accuracyDf, aes(x=as.factor(nSamples), y=values, fill = as.factor(nSamples), group=as.factor(nSamples)))+
+  #fill = as.factor(nSamples)
+  plot <- ggplot(data = accuracyDf, aes(x=as.factor(nSamples), y=values, fill = as.factor(nSamples) , group=as.factor(nSamples)))+
     geom_boxplot()+
     scale_x_discrete(labels= waiver())+
     scale_fill_viridis(discrete = TRUE, alpha = 0.6) + 
     geom_jitter(color = "black", size = 0.4, alpha=0.9)+
-    ggtitle("accuracy per samplesize")+
+    ggtitle(paste(attribute,"per samplesize"))+
+    ylab(attribute)+
+    xlab("samplesize")+
+    labs(fill="samplesize")+
     facet_wrap(~Class)
   
   return(plot)
@@ -144,6 +147,7 @@ saturationPlot <- function(accuracyDf, attribute){
 
 # this function uses the drm() function from the drc package to model an asymptotic regression model
 # for the datapoints provided by saturationCheck()
+# The data points used are the median values for each samplesize
 # @param df data.frame object like the ones created by saturationCheck()
 # @return asymptotic regression model
 estimateCurve <- function(df){
@@ -169,9 +173,11 @@ estimateCurve <- function(df){
   
   # drm fit
   model <- drm(values_1 ~ nSamples_1, fct = AR.3())
-  plot(model, 
-       log="", 
-       main = "Trainingdata saturation"#, 
+  plot(model,
+       log="",
+       main = "Training data saturation",
+       xlab = "samplesize",
+       ylab = "overall accuracy"
        #xlim = c(0,6000)
   )
   return (model)
@@ -205,6 +211,8 @@ sampleSaturation <- function(model, satslope){
   
   # rearranging it and add satslope as y
   g_rearraged <- function(x) (coef_d - coef_c)*(exp(-x/coef_e)*(1/coef_e))-satslope
+  
+  # calculating root of the function (which gives x for y=satslope)
   x_sat <- uniroot(g_rearraged, lower=0, upper=3000)$root
   # print(x_sat)
   
@@ -227,7 +235,7 @@ training_bavaria_2 <- readOGR(here("training_data/training_bayern_2_small.shp"))
 
 # importing validation data
 validation_bavaria_1 <- readOGR(here("validation_data/validation_bayern_1_small.shp"))
-validation_bavaria_2 <- readOGR(here("validation_data/validation_bayern_1_small.shp"))
+validation_bavaria_2 <- readOGR(here("validation_data/validation_bayern_2_small.shp"))
 
 ###################################################################
 # running the previously defined functions                        # 
@@ -238,10 +246,11 @@ validation_bavaria_2 <- readOGR(here("validation_data/validation_bayern_1_small.
 # To test it, I suggest using something like 
 # iterations = 2, 
 # sampleValList_raw = list(50,100,1000,2000)
-# the result will not be as clear!
+# the result will not be as meaningful!
+# bayern_1
 saturationDf_bayern_1 <-  saturationCheck(
-  iterations = 4, 
-  sampleValList_raw = list(50,100,500,1000,2000,4000), 
+  iterations = 6, 
+  sampleValList_raw = list(50, 100, 500, 1000, 1500, 2000, 3000, 4000), 
   image = rgb_2019_bavaria_1, 
   training = training_bavaria_1, 
   validation = validation_bavaria_1
@@ -249,24 +258,77 @@ saturationDf_bayern_1 <-  saturationCheck(
 
 saturationDf_bayern_1
 
+# bayern_2
+saturationDf_bayern_2 <-  saturationCheck(
+  iterations = 6, 
+  sampleValList_raw = list(50, 100, 500, 1000, 1500, 2000, 3000, 4000), 
+  image = rgb_2019_bavaria_2, 
+  training = training_bavaria_2, 
+  validation = validation_bavaria_2
+)
+
+saturationDf_bayern_2
+
 # exporting dataframe for further usage
-# write.table(saturationDf, file=here("outputs/df_bayern_1.txt"), sep=";")
+# write.table(saturationDf_bayern_1, file=here("outputs/saturationDf_bayern_1.txt"), sep=";")
 
 # plotting saturationDf results using the saturationPlot() function
-plotSaturationDf_bayern_1 <- saturationPlot(
+
+x11()
+# bayern_1
+# sensitivity
+plotSaturationDf_bayern_1_sens <- saturationPlot(
+  accuracyDf = saturationDf_bayern_1, 
+  attribute = "sensitivity"
+  )
+plotSaturationDf_bayern_1_sens
+
+# specificity
+plotSaturationDf_bayern_1_spec <- saturationPlot(
+  accuracyDf = saturationDf_bayern_1, 
+  attribute = "specificity"
+)
+plotSaturationDf_bayern_1_spec
+
+# accuracy
+plotSaturationDf_bayern_1_acc <- saturationPlot(
   accuracyDf = saturationDf_bayern_1, 
   attribute = "accuracy"
-  )
+)
+plotSaturationDf_bayern_1_acc
 
-plotSaturationImage1
+#bayern_2
+# sensitivity
+plotSaturationDf_bayern_2_sens <- saturationPlot(
+  accuracyDf = saturationDf_bayern_2, 
+  attribute = "sensitivity"
+)
+plotSaturationDf_bayern_2_sens
+
+# specificity
+plotSaturationDf_bayern_2_spec <- saturationPlot(
+  accuracyDf = saturationDf_bayern_2, 
+  attribute = "specificity"
+)
+plotSaturationDf_bayern_2_spec
+
+# accuracy
+plotSaturationDf_bayern_2_acc <- saturationPlot(
+  accuracyDf = saturationDf_bayern_2, 
+  attribute = "accuracy"
+)
+plotSaturationDf_bayern_2_acc
 
 # running estimateCurve() function
 curve_bayern_1 <- estimateCurve(saturationDf_bayern_1)
 curve_bayern_1
 
+curve_bayern_2 <- estimateCurve(saturationDf_bayern_2)
+curve_bayern_2
 
 # running sampleSaturation() function
 sampleSaturation(curve_bayern_1, 0.000001)
+sampleSaturation(curve_bayern_2, 0.000001)
 
 ###################################################################
 # the  end                                                        # 
