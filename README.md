@@ -3,10 +3,24 @@
 ## Site overview
 ![overview image](https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/OverviewSmallSitesNummeriert.png) <br>
 <br>
-1 = img_data/S2Stack_20190704_bayern_1_small.tif <br>
-2 = img_data/S2Stack_20190704_bayern_2_small.tif <br>
-3 = img_data/S2Stack_20190704_bayern_3_small.tif <br>
-4 = img_data/S2Stack_20190704_bayern_4_small.tif <br>
+ <table>
+  <tr>
+    <td>Site 1</td>
+    <td>img_data/S2Stack_20190704_bayern_1_small.tif</td>
+  </tr>
+  <tr>
+    <td>Site 2</td>
+    <td>img_data/S2Stack_20190704_bayern_2_small.tif</td>
+  </tr>
+  <tr>
+    <td>Site 3</td>
+    <td>img_data/S2Stack_20190704_bayern_3_small.tif</td>
+  </tr>
+   <tr>
+    <td>Site 4</td>
+    <td>img_data/S2Stack_20190704_bayern_4_small.tif</td>
+  </tr>
+</table> 
 
 ## Class overview
 In all example data files the classes are assigned as follows:<br>
@@ -74,9 +88,8 @@ plotSaturationDf_bayern_1_spec <- saturationPlot(
   <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_sensitivity_neu.png" width="30%" /> 
   <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_specificity_neu.png" width="30%" />
 </p>
-<br>
 
-#### results for site 2 (click on images to enlarge them):
+#### results for site 2:
 <p float="left">
   <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_2_accuracy.png" width="30%" />
   <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_2_sensitivity.png" width="30%" /> 
