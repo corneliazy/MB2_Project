@@ -5,8 +5,6 @@
 # This is a script for assessing the influence of the distribution#
 # of training data on the accuracy of a supervised random forest  #
 # classification within the RStoolbox superClass() function.      #
-# LIMITATION:                                                     #
-# So far, code is only working for classifications with 3 classes # 
 ###################################################################
 
 # loading packages
@@ -140,6 +138,7 @@ image <- brick(here("img_data/S2Stack_20190704_bayern_1_small.tif"))
 ###################################################################
 # running the functions                                           #
 ###################################################################
+
 # applying distrAssessment function over all elements of trainingList
 # the higher the numSamples value, the longer the computation will take!
 accuracyResult <- lapply(trainingList, distrAssessment, img = image, numSamples=200, validationData=valData)
