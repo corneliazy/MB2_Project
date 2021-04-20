@@ -32,6 +32,7 @@ Therefore, In the following I present some results I already calculated.
 
 ### saturationCheck()
 This function is the "base" of this script as it estimates the accuracy values for different numbers of samples.<br>
+**function execution for site 1**
 ```
 saturationDf_bayern_1 <-  saturationCheck(
   iterations = 6, 
@@ -46,6 +47,7 @@ saturationDf_bayern_1 <-  saturationCheck(
 ### saturationPlot()
 With this function, classwise sensitivity and specificity values can be plotted as well as overall accuracy values. <br>
 It serves as a tool for a visual (more subjective) saturation estimation and also shows the behaviour of individual classes. <br>
+**function execution for site 1**
 ```
 # accuracy
 plotSaturationDf_bayern_1_acc <- saturationPlot(
@@ -66,7 +68,7 @@ plotSaturationDf_bayern_1_spec <- saturationPlot(
 )
 ```
 
-#### results for bayern_1 (click on images to enlarge them):
+#### results for site 1 (click on images to enlarge them):
 <p float="left">
   <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_accuracy_neu.png" width="30%" />
   <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_sensitivity_neu.png" width="30%" /> 
@@ -74,7 +76,7 @@ plotSaturationDf_bayern_1_spec <- saturationPlot(
 </p>
 <br>
 
-#### results for bayern_2 (click on images to enlarge them):
+#### results for site 2 (click on images to enlarge them):
 <p float="left">
   <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_2_accuracy.png" width="30%" />
   <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_2_sensitivity.png" width="30%" /> 
@@ -83,6 +85,7 @@ plotSaturationDf_bayern_1_spec <- saturationPlot(
 
 ### estimateCurve() 
 Here, an asymptotic regression model is adjusted to the median overall accuracy values of the accuracy data frame (provided by saturationCheck()). <br>
+**function execution for site 1**
 ```
 > curve_bayern_1 <- estimateCurve(saturationDf_bayern_1)
 > curve_bayern_1
