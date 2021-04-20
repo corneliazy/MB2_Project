@@ -32,7 +32,7 @@ Therefore, In the following I present some results I already calculated.
 
 ### saturationCheck()
 This function is the "base" of this script as it estimates the accuracy values for different numbers of samples.<br>
-**function execution for site 1**
+*function execution for site 1:*
 ```
 saturationDf_bayern_1 <-  saturationCheck(
   iterations = 6, 
@@ -47,7 +47,7 @@ saturationDf_bayern_1 <-  saturationCheck(
 ### saturationPlot()
 With this function, classwise sensitivity and specificity values can be plotted as well as overall accuracy values. <br>
 It serves as a tool for a visual (more subjective) saturation estimation and also shows the behaviour of individual classes. <br>
-**function execution for site 1**
+*function execution for site 1:*
 ```
 # accuracy
 plotSaturationDf_bayern_1_acc <- saturationPlot(
@@ -85,7 +85,7 @@ plotSaturationDf_bayern_1_spec <- saturationPlot(
 
 ### estimateCurve() 
 Here, an asymptotic regression model is adjusted to the median overall accuracy values of the accuracy data frame (provided by saturationCheck()). <br>
-**function execution for site 1**
+*function execution for site 1:*
 ```
 > curve_bayern_1 <- estimateCurve(saturationDf_bayern_1)
 > curve_bayern_1
