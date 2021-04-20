@@ -66,7 +66,7 @@ plotSaturationDf_bayern_1_spec <- saturationPlot(
 )
 ```
 
-#### results for bayern_1:
+#### results for bayern_1 (click on images to enlarge them):
 <p float="left">
   <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_accuracy.png" width="30%" />
   <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_sensitivity.png" width="30%" /> 
