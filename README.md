@@ -29,11 +29,40 @@ In all example data files the classes are assigned as follows:<br>
 
 ## saturationCheck.R
 ### saturationCheck()
-This function is the base as it estimates the accuracy values for different numbers of samples.
+This function is the base as it estimates the accuracy values for different numbers of samples.<br>
+```
+saturationDf_bayern_1 <-  saturationCheck(
+  iterations = 6, 
+  sampleValList_raw = list(50, 100, 500, 1000, 1500, 2000, 3000, 4000), 
+  image = rgb_2019_bavaria_1, 
+  training = training_bavaria_1, 
+  validation = validation_bavaria_1
+  )
+```
+
 
 ### saturationPlot()
 With this function, classwise sensitivity and specificity values can be plotted as well as overall accuracy values. <br>
-It serves as a tool for a visual (more subjective) saturation estimation and also shows the behaviour of individual classes.
+It serves as a tool for a visual (more subjective) saturation estimation and also shows the behaviour of individual classes. <br>
+```
+# accuracy
+plotSaturationDf_bayern_1_acc <- saturationPlot(
+  accuracyDf = saturationDf_bayern_1, 
+  attribute = "accuracy"
+)
+
+# sensitivity
+plotSaturationDf_bayern_1_sens <- saturationPlot(
+  accuracyDf = saturationDf_bayern_1, 
+  attribute = "sensitivity"
+  )
+
+# specificity
+plotSaturationDf_bayern_1_spec <- saturationPlot(
+  accuracyDf = saturationDf_bayern_1, 
+  attribute = "specificity"
+)
+```
 
 #### results for bayern_1:
 <p float="left">
@@ -45,8 +74,27 @@ It serves as a tool for a visual (more subjective) saturation estimation and als
 
 ### estimateCurve() 
 Here, an asymptotic regression model is adjusted to the median values of the accuracy data frame (provided by saturationCheck()). <br>
-![saturationcurve bayern_1](https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/curve_bayern_1.png)
+```
+> curve_bayern_1 <- estimateCurve(saturationDf_bayern_1)
+> curve_bayern_1
+
+A 'drc' model.
+
+Call:
+drm(formula = values_1 ~ nSamples_1, fct = AR.3())
+
+Coefficients:
+c:(Intercept)  d:(Intercept)  e:(Intercept)  
+       0.9086         0.9307       766.8518  
+```
+
+![saturationcurve bayern_1](https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/curve_bayern_1.png)<br>
+<br>
 
 ### sampleSaturation()
 This function returns the number of nSamples at which a saturation of the data can be expected. <br>
-The calculation is based on the regression curve (estimateCurve()) and a slope (provided by the user) at which the curve is defined as saturated.
+The calculation is based on the regression curve (estimateCurve()) and a slope (provided by the user) at which the curve is defined as saturated.<br>
+```
+> sampleSaturation(curve_bayern_1, 0.000001)
+[1] 2579.789
+```
