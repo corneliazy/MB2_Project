@@ -44,7 +44,7 @@ It serves as a tool for a visual (more subjective) saturation estimation and als
 
 
 ### estimateCurve() 
-Here, an asymptotic regression model is adjusted to the accuracy data frame (provided by saturationCheck()). <br>
+Here, an asymptotic regression model is adjusted to the median values of the accuracy data frame (provided by saturationCheck()). <br>
 ![saturationcurve bayern_1](https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/curve_bayern_1.png)
 
 ### sampleSaturation()
