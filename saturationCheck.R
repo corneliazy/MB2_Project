@@ -1,5 +1,5 @@
 # MB2 Project (training data saturation)
-# author: Cornelia Zygar, 2582296
+# Cornelia Zygar, 2582296
 
 ###################################################################
 # This is a script for the assessment training data saturation    #
@@ -19,10 +19,12 @@ library(RCurl)
 library(mosaic)
 library(tidyr)
 library(viridis)
+library(here)
 
 # for self starting nonlinear regression model
 library(drc)
 library(stats)
+#library(Deriv)
 
 
 ###################################################################
@@ -43,7 +45,7 @@ library(stats)
 # @param image rasterbrick to perform the supervised classification on
 # @param training set of training data (polygons)
 # @param validation set of validation data (polygons)
-# function returns a list of classwise sensitivity and specificity values and overall accuracy
+# @return list of classwise sensitivity and specificity values and overall accuracy
 helpSaturationCheck <- function(sampleValNumber, image, training, validation){
   caretResult <- getValidation(
     superClass(
@@ -79,7 +81,7 @@ helpSaturationCheck <- function(sampleValNumber, image, training, validation){
 # @param image rasterbrick to perform the supervised classification on
 # @param training training set of training data (polygons)
 # @param validation set of validation data (polygons)
-
+# @return dataframe containing information on classification accuracy depending on nSamples
 saturationCheck <- function(iterations, sampleValList_raw, image, training, validation){
   
   # defining list to which helpSaturationcheck can be applied on.
@@ -116,6 +118,7 @@ return (df)
 # 3: plotting classwise specificity
 # @param accuaryDf dataframe created by saturationCheck() function
 # @param attribute attribute whose accuracy will be plotted ("accuracy"/"specificity"/"sensitivity")
+# @return boxplot visualizing connection between nSamples and accuracy characteristics
 saturationPlot <- function(accuracyDf, attribute){
   
   # select all rows where attribute == attribute
@@ -141,17 +144,20 @@ saturationPlot <- function(accuracyDf, attribute){
 ###################################################################
 # loading the data                                                # 
 ###################################################################
-# TODO: this must be set to the path within GitHub!
-setwd("C:/Users/Cornelia/Documents/Studium/EAGLE/1.Semester/MB2/Project")
+# Code has to be located in the same directory as the "validation_data", 
+# "training_data" and "img_data" folders!
 
 # only selecting rgb (not NIR)
-rgb_2019_bavaria_1 <- dropLayer(brick("S2Stack_20190704_bayern_1_small.tif"),4)
+rgb_2019_bavaria_1 <- dropLayer(brick(here("img_data/S2Stack_20190704_bayern_1_small.tif")),4)
+rgb_2019_bavaria_2 <- dropLayer(brick(here("img_data/S2Stack_20190704_bayern_2_small.tif")),4)
 
 # importing Training data
-training_bavaria_1 <- readOGR("training_bayern_1_small.shp")
+training_bavaria_1 <- readOGR(here("training_data/training_bayern_1_small.shp"))
+training_bavaria_2 <- readOGR(here("training_data/training_bayern_2_small.shp"))
 
 # importing validation data
-validation_bavaria_1 <- readOGR("validation_bayern_1_small.shp")
+validation_bavaria_1 <- readOGR(here("validation_data/validation_bayern_1_small.shp"))
+validation_bavaria_2 <- readOGR(here("validation_data/validation_bayern_1_small.shp"))
 
 ###################################################################
 # running the functions                                           # 
@@ -232,7 +238,7 @@ ggg
 # function to extract point of trainingdata saturation
 # satslope = slope of a curve at which it is defined as saturated
 sampleSaturation <- function(model, satslope){
-  
+
   # extracting coefficient values from model
   coef_c <- as.list(model$coefficients)$c
   coef_d <- as.list(model$coefficients)$d
@@ -240,49 +246,36 @@ sampleSaturation <- function(model, satslope){
   
   # insert coefficient values into function
   f <- function(x) (coef_c+(coef_d-coef_c)*(1-exp(-x/coef_e)))
+  # plot f
   curve(f,0,3000)
-  
+
   # calculating derivation (with respect to x) of f to get its slope
   g <- function(x){}
   body(g) <- D(body(f), "x")
-  # f <- y ~ coef_c+(coef_d-coef_c)*(1-exp(-x/coef_c))
-  #f <- expression(coef_c+(coef_d-coef_c)*(1-exp(-x/coef_e)))
-  #f <- coef_c+(coef_d-coef_c)*(1-exp(-x/coef_e))
-  # curve(g, 0, 3000)
-  #result_hoffentlich <- x[which(g(x)==0.01)]
   
-  # get x of first derivation where y== satslope
-  #sat_x <- uniroot((g$y)-0.05, interval = c(0,6000))$root
+  # plot g
+  curve(g, 0, 3000)
+
+  # derivation function:
+  # function (x) (coef_d - coef_c) * (exp(-x/coef_e) * (1/coef_e))
   
-  #return(sat_x)
-  #return(result_hoffentlich)
-  return (g)
+  # rearranging it
+  g_rearraged <- function(x) (coef_d - coef_c)*(exp(-x/coef_e)*(1/coef_e))-satslope
+  x_sat <- uniroot(g_rearraged, lower=0, upper=3000)$root
+  # print(x_sat)
   
-  # calculating derivation 
-  #first_derivation <- D(f,"x")
-  
-  #uniroot(first_derivation, )
-  
-  #result1 <- eval(first_derivation, envir = list(coef_c = coef_c, coef_d = coef_d, coef_e = coef_e))
-  #return (result1)
-  
-  #res <- first_derivation(coef_c = coef_c, coef_d = coef_d, coef_e = coef_e, x=1000)
-  #eval(first_derivation)
-  #class(first_derivation)
-  #g <- y~first_derivation
-  
- #return(res)
-  #return(first_derivation)
+  return (x_sat)
+
 }
 
 # testing function
-sampleSaturation(ggg, "0.5")
+sampleSaturation(ggg, 0.000001)
 
 ###################################################################
 # the  end                                                        # 
 ###################################################################
-
-
+f3 <- function(x){5~3+x}
+solve(f3)
 
 # plotting the result:
 ggplot(data = accuracydf, aes(x=nSamples, y = accuracy))+
