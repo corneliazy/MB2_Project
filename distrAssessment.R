@@ -12,6 +12,7 @@ library("ggplot2")
 library("rgdal")
 library("RStoolbox")
 library("here")
+library("raster")
 
 ###################################################################
 # Basic idea                                                      #
@@ -156,7 +157,3 @@ sensitivityResult
 # specificity
 specificityResult <- plotDistrAssessment("specificity", accuracyResult)
 specificityResult
-
-# wrong argument
-wrongArgResult <- plotDistrAssessment("nonExisting", accuracyResult)
-wrongArgResult
