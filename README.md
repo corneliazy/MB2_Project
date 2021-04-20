@@ -20,9 +20,9 @@ It serves as a tool for a visual (more subjective) saturation estimation and als
 
 #### results for bayern_1:
 <p float="left">
-  <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_accuracy.png" width="100" />
-  <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_sensitivity.png" width="100" /> 
-  <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_specificity.png" width="100" />
+  <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_accuracy.png" width="33%" />
+  <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_sensitivity.png" width="33%" /> 
+  <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_specificity.png" width="33%" />
 </p>
 
 
