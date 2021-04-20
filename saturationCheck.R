@@ -2,9 +2,9 @@
 # Cornelia Zygar, 2582296
 
 ###################################################################
-# This is a script for the assessment training data saturation    #
-# for different satellite images for a supervised  random forest  #
-# classification within the RStoolbox.                            #
+# This is a script for the determination of training data         #
+# saturation for a supervised  random forest classification       #
+# within the RStoolbox package.                                   #
 # LIMITATION:                                                     #
 # So far, code is only working for classifications with 3 classes # 
 ###################################################################
@@ -213,8 +213,7 @@ sampleSaturation <- function(model, satslope){
   g_rearraged <- function(x) (coef_d - coef_c)*(exp(-x/coef_e)*(1/coef_e))-satslope
   
   # calculating root of the function (which gives x for y=satslope)
-  x_sat <- uniroot(g_rearraged, lower=0, upper=3000)$root
-  # print(x_sat)
+  x_sat <- uniroot(g_rearraged, lower=0, upper=4000)$root
   
   return (x_sat)
   
@@ -231,6 +230,7 @@ rgb_2019_bavaria_2 <- dropLayer(brick(here("img_data/S2Stack_20190704_bayern_2_s
 
 # importing Training data
 training_bavaria_1 <- readOGR(here("training_data/training_bayern_1_small.shp"))
+training_bavaria_1_neu <- readOGR(here("training_data/training_bayern_1_small_neu.shp"))
 training_bavaria_2 <- readOGR(here("training_data/training_bayern_2_small.shp"))
 
 # importing validation data
@@ -242,11 +242,56 @@ validation_bavaria_2 <- readOGR(here("validation_data/validation_bayern_2_small.
 ###################################################################
 
 # this function call will take long! Depending on the chosen number of iterations and the number 
-# and size of samples in sampleValList_raw it might take very (!) long (20-30 min).
-# To test it, I suggest using something like 
-# iterations = 2, 
-# sampleValList_raw = list(50,100,1000,2000)
-# the result will not be as meaningful!
+# and size of samples in sampleValList_raw it might take very (!!!) long (>30 min).
+# To test it, I suggest using something like the commented code below.
+# This will run significantly faster but the result will not be as meaningful!
+
+##########################Test suggestion##########################
+# # calculating accuracy values
+# saturationDf_bayern_1_test <-  saturationCheck(
+#   iterations = 1, 
+#   sampleValList_raw = list(50, 1000, 1500, 2000, 3000), 
+#   image = rgb_2019_bavaria_1, 
+#   training = training_bavaria_1, 
+#   validation = validation_bavaria_1
+# )
+# 
+# saturationDf_bayern_1_test
+# 
+# 
+# # plotting the results
+# # sensitivity
+# plotSaturationDf_bayern_1_test_sens <- saturationPlot(
+#   accuracyDf = saturationDf_bayern_1_test, 
+#   attribute = "sensitivity"
+# )
+# plotSaturationDf_bayern_1_test_sens
+# 
+# # specificity
+# plotSaturationDf_bayern_1_test_spec <- saturationPlot(
+#   accuracyDf = saturationDf_bayern_1_test, 
+#   attribute = "specificity"
+# )
+# plotSaturationDf_bayern_1_test_spec
+# 
+# # accuracy
+# plotSaturationDf_bayern_1_test_acc <- saturationPlot(
+#   accuracyDf = saturationDf_bayern_1_test, 
+#   attribute = "accuracy"
+# )
+# plotSaturationDf_bayern_1_test_acc
+# 
+# # estimating asymptotic regression curve
+# curve_bayern_1_test <- estimateCurve(saturationDf_bayern_1_test)
+# curve_bayern_1_test
+# 
+# # calculating nSamples for which function accuracy saturates
+# sampleSaturation(curve_bayern_1_test, 0.000001)
+# 
+################################End################################
+
+# "Real" code
+
 # bayern_1
 saturationDf_bayern_1 <-  saturationCheck(
   iterations = 6, 
@@ -273,8 +318,8 @@ saturationDf_bayern_2
 # write.table(saturationDf_bayern_1, file=here("outputs/saturationDf_bayern_1.txt"), sep=";")
 
 # plotting saturationDf results using the saturationPlot() function
-
 x11()
+
 # bayern_1
 # sensitivity
 plotSaturationDf_bayern_1_sens <- saturationPlot(
