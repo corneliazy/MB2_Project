@@ -31,7 +31,7 @@ For testing, I suggest to reduce the amount iterations and sampleValList_raw val
 Therefore, In the following I present some results I already calculated.
 
 ### saturationCheck()
-This function is the base as it estimates the accuracy values for different numbers of samples.<br>
+This function is the "base" of this script as it estimates the accuracy values for different numbers of samples.<br>
 ```
 saturationDf_bayern_1 <-  saturationCheck(
   iterations = 6, 
