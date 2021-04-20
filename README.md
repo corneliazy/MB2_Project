@@ -14,15 +14,15 @@ Therefore, In the following I present some results I already calculated.
 In all example data files the classes are assigned as follows:<br>
  <table>
   <tr>
-    <td>Class 1 = </td>
+    <td>Class 1</td>
     <td>forest</td>
   </tr>
   <tr>
-    <td>Class 2  =</td>
+    <td>Class 2</td>
     <td>agri</td>
   </tr>
   <tr>
-    <td>Class 3 = </td>
+    <td>Class 3</td>
     <td>urban</td>
   </tr>
 </table> 
