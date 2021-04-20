@@ -1,6 +1,6 @@
 # Training data saturation analysis
 **Important note:** In the code, some functions will be run. Especially the saturationCheck() function can take very (>20 minutes) long (depending on selected parameter values).
-For testing, I suggest to reduce the amount iterations and sampleValList_raw values. Nevertheless, this will most probably reduce the quality of the result. <br>
+For testing, I suggest to reduce the amount iterations and sampleValList_raw values. This will most probably reduce the quality of the result. <br>
 Therefore, In the following I present some results I calculated already.
 ## Site overview
 ![overview image](https://raw.githubusercontent.com/corneliazy/MB2_Project/main/OverviewSmallSitesNummeriert.png) <br>
