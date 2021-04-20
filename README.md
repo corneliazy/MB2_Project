@@ -1,7 +1,7 @@
 # Training data saturation & distribution analysis
 
 ## Site overview
-![overview image](https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/OverviewSmallSitesNummeriert.png) <br>
+![overview image](https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/OverviewSmallSitesUSEDNummeriert.png) <br>
 <br>
  <table>
   <tr>
