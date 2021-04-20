@@ -230,7 +230,6 @@ rgb_2019_bavaria_2 <- dropLayer(brick(here("img_data/S2Stack_20190704_bayern_2_s
 
 # importing Training data
 training_bavaria_1 <- readOGR(here("training_data/training_bayern_1_small.shp"))
-training_bavaria_1_neu <- readOGR(here("training_data/training_bayern_1_small_neu.shp"))
 training_bavaria_2 <- readOGR(here("training_data/training_bayern_2_small.shp"))
 
 # importing validation data
