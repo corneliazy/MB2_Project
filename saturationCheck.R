@@ -284,7 +284,7 @@ validation_bavaria_2 <- readOGR(here("validation_data/validation_bayern_2_small.
 # curve_bayern_1_test <- estimateCurve(saturationDf_bayern_1_test)
 # curve_bayern_1_test
 # 
-# # calculating nSamples for which function accuracy saturates
+# # calculating nSamples for which overall accuracy saturates
 # sampleSaturation(curve_bayern_1_test, 0.000001)
 # 
 ################################End################################
