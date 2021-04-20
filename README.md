@@ -3,7 +3,7 @@
 For testing, I suggest to reduce the amount iterations and sampleValList_raw values. Nevertheless, this will most probably reduce the quality of the result. <br>
 Therefore, In the following I present some results I already calculated.
 ## Site overview
-![overview image](https://raw.githubusercontent.com/corneliazy/MB2_Project/main/OverviewSmallSitesNummeriert.png) <br>
+![overview image](https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/OverviewSmallSitesNummeriert.png) <br>
 <br>
 1 = img_data/S2Stack_20190704_bayern_1_small.tif <br>
 2 = img_data/S2Stack_20190704_bayern_2_small.tif <br>
