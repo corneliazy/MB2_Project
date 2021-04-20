@@ -73,6 +73,7 @@ plotSaturationDf_bayern_1_spec <- saturationPlot(
   <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_1_specificity_neu.png" width="30%" />
 </p>
 <br>
+
 #### results for bayern_2 (click on images to enlarge them):
 <p float="left">
   <img src="https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/bayern_2_accuracy.png" width="30%" />
@@ -81,7 +82,7 @@ plotSaturationDf_bayern_1_spec <- saturationPlot(
 </p>
 
 ### estimateCurve() 
-Here, an asymptotic regression model is adjusted to the median values of the accuracy data frame (provided by saturationCheck()). <br>
+Here, an asymptotic regression model is adjusted to the median overall accuracy values of the accuracy data frame (provided by saturationCheck()). <br>
 ```
 > curve_bayern_1 <- estimateCurve(saturationDf_bayern_1)
 > curve_bayern_1
