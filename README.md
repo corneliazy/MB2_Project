@@ -12,14 +12,6 @@
     <td>Site 2</td>
     <td>img_data/S2Stack_20190704_bayern_2_small.tif</td>
   </tr>
-  <tr>
-    <td>Site 3</td>
-    <td>img_data/S2Stack_20190704_bayern_3_small.tif</td>
-  </tr>
-   <tr>
-    <td>Site 4</td>
-    <td>img_data/S2Stack_20190704_bayern_4_small.tif</td>
-  </tr>
 </table> 
 
 ## Class overview
