@@ -113,9 +113,24 @@ c:(Intercept)  d:(Intercept)  e:(Intercept)
        0.9086         0.9307       766.8518  
 ```
 
-![saturationcurve bayern_1](https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/curve_bayern_1.png)<br>
-<br>
+![saturationcurve bayern_1](https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/curve_bayern_1_neu.png)<br>
 
+*function execution for site 2:*
+```
+> curve_bayern_2 <- estimateCurve(saturationDf_bayern_2)
+> curve_bayern_2
+
+A 'drc' model.
+
+Call:
+drm(formula = values_1 ~ nSamples_1, fct = AR.3())
+
+Coefficients:
+c:(Intercept)  d:(Intercept)  e:(Intercept)  
+       0.9056         0.9707       209.1066  
+
+```
+![saturationcurve bayern_2](https://raw.githubusercontent.com/corneliazy/MB2_Project/main/readme_data/curve_bayern_2.png)<br>
 ### sampleSaturation()
 This function returns the number of nSamples at which a saturation of the data can be expected. <br>
 The calculation is based on the regression curve (estimateCurve()) and a slope (provided by the user) at which the curve is defined as saturated.<br>
