@@ -10,6 +10,23 @@ Therefore, In the following I present some results I already calculated.
 3 = img_data/S2Stack_20190704_bayern_3_small.tif <br>
 4 = img_data/S2Stack_20190704_bayern_4_small.tif <br>
 
+## Class overview
+In all example data files the classes are assigned as follows:<br>
+ <table>
+  <tr>
+    <td>Class 1 = </td>
+    <td>forest</td>
+  </tr>
+  <tr>
+    <td>Class 2  =</td>
+    <td>agri</td>
+  </tr>
+  <tr>
+    <td>Class 3 = </td>
+    <td>urban</td>
+  </tr>
+</table> 
+
 ## saturationCheck.R
 ### saturationCheck()
 This function is the base as it estimates the accuracy values for different numbers of samples.
